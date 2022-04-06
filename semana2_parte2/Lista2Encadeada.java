@@ -1,8 +1,3 @@
-package minha_le;
-
-import jdk.swing.interop.SwingInterOpUtils;
-import listaencadeada.NoAD;
-
 import java.util.Objects;
 
 
@@ -27,15 +22,13 @@ public class Lista2Encadeada {
             return null;
         }else if(this.primeiro != null){
             No encontra = this.primeiro;
-            boolean found = false;
             while(encontra.getProximo() != null){
                 encontra = encontra.getProximo();
                 if(encontra.getDado() == pDado){
                     return encontra;
                 }
-                found = true;
             }
-            if (!found)return null;
+            return null;
         }else if(this.ultimo != null){
             No encontra = this.ultimo;
             boolean found = false;
@@ -72,7 +65,7 @@ public class Lista2Encadeada {
         }
     }
 
-    public void inserePrimeiro(int pDado){
+    public No inserePrimeiro(int pDado){
         if(this.primeiro == null) {
             No primeiro = new No(pDado);
             this.primeiro = primeiro;
@@ -86,15 +79,17 @@ public class Lista2Encadeada {
             }else{
                 this.ultimo = primeiro;
             }
+            return this.primeiro;
         }
         else{
             No novo_primeiro = new No(pDado);
             novo_primeiro.setProximo(this.primeiro);
             this.primeiro.setAnterior(novo_primeiro);
             this.primeiro = novo_primeiro;
+            return this.primeiro;
         }
     }
-    public void insereUltimo(int pDado){
+    public No insereUltimo(int pDado){
         if(this.ultimo == null){
             No ultimo = new No(pDado);
             this.ultimo = ultimo;
@@ -108,43 +103,55 @@ public class Lista2Encadeada {
             }else{
                 this.primeiro = this.ultimo;
             }
+            return this.ultimo;
         }else{
             No novo_ultimo = new No(pDado);
             novo_ultimo.setAnterior(this.ultimo);
             this.ultimo.setProximo(novo_ultimo);
             this.ultimo = novo_ultimo;
+            return this.ultimo;
         }
     }
 
-    public void removePrimeiro(){
+    public No removePrimeiro(){
         if(this.vazia()){
             System.out.println("A lista está vazia");
+            return null;
         }else if(this.primeiro == null && this.ultimo != null){
             No encontra_primeiro = this.ultimo.getAnterior();
             while(encontra_primeiro.getAnterior() != null){
                 encontra_primeiro = encontra_primeiro.getAnterior();
             }
             encontra_primeiro.getProximo().setAnterior(null);
+            return encontra_primeiro;
         }else if(this.primeiro != null){
+            No return_primeiro = primeiro;
             primeiro = primeiro.getProximo();
             primeiro.setAnterior(null);
+            return return_primeiro;
         }
+        return null;
     }
 
-    public void removeUltimo(){
+    public No removeUltimo(){
         if(this.vazia()){
             System.out.println("A lista está vazia");
+            return null;
         }else if(this.ultimo == null && this.primeiro != null){
             No encontra_ultimo = this.primeiro.getProximo();
             while(encontra_ultimo.getProximo() != null){
                 encontra_ultimo = encontra_ultimo.getProximo();
             }
             encontra_ultimo.getAnterior().setProximo(null);
+            return encontra_ultimo;
         }
         else if(this.ultimo != null){
+            No return_ultimo = ultimo;
             ultimo = ultimo.getAnterior();
             ultimo.setProximo(null);
+            return return_ultimo;
         }
+        return null;
     }
 
     public No insereDepois(No  pNo,  int  pDado){
@@ -193,6 +200,7 @@ public class Lista2Encadeada {
                 if(Objects.equals(encontra.getDado(), pNo.getDado())){
                     encontra.getAnterior().setProximo(encontra.getProximo());
                     encontra.getProximo().setAnterior(encontra.getAnterior());
+                    return encontra;
                 }
             }
             return null;
